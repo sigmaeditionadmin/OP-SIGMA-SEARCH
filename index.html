@@ -134,9 +134,10 @@ function loadLink() {
 }
 
 function openYouTube() {
-  // Base64 for https://www.youtube.com
-  const youtubeBase64 = 'aHR0cHM6Ly93d3cueW91dHViZS5jb20=';
-  const proxyUrl = 'https://208.87.240.67/?__cpo=' + youtubeBase64;
+  // Always generate a NEW base64 string for https://www.youtube.com
+  const urlToEncode = 'https://www.youtube.com';
+  const encodedUrl = btoa(urlToEncode);
+  const proxyUrl = 'https://208.87.240.67/?__cpo=' + encodedUrl;
   document.getElementById('contentFrame').src = proxyUrl;
 }
 </script>
