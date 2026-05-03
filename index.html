@@ -88,14 +88,15 @@
 
 <script>
 function loadLink() {
-  const url = document.getElementById('linkInput').value.trim();
+  let url = document.getElementById('linkInput').value.trim();
   if (url) {
-    // Add protocol if missing
-    const hasProtocol = url.startsWith('http://') || url.startsWith('https://');
-    const validUrl = hasProtocol ? url : 'https://' + url;
-    document.getElementById('contentFrame').src = validUrl;
+    // Automatically prepend https:// if no protocol is present
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+    document.getElementById('contentFrame').src = url;
   } else {
-    alert('Please enter a valid link.');
+    alert('Please enter a link.');
   }
 }
 </script>
