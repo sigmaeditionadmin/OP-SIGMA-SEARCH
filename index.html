@@ -4,19 +4,39 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Unblocker</title>
+<style>
+  #iframeContainer {
+    width: 100%;
+    height: 80vh; /* Adjust as needed */
+    border: 1px solid #ccc;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
 </head>
 <body>
+<h2>Enter Link to View</h2>
 <input type="text" id="linkInput" placeholder="Enter your link here" style="width: 80%;" />
-<button onclick="openLink()">Open Link</button>
+<button onclick="loadLink()">Open in Frame</button>
+
+<div id="iframeContainer">
+  <iframe id="contentFrame" src=""></iframe>
+</div>
 
 <script>
-function openLink() {
-    const url = document.getElementById('linkInput').value;
-    if (url) {
-        window.location.href = url; // Opens link in the same tab
-    } else {
-        alert('Please enter a valid link.');
-    }
+function loadLink() {
+  const url = document.getElementById('linkInput').value;
+  if (url) {
+    // Add protocol if missing
+    const hasProtocol = url.startsWith('http://') || url.startsWith('https://');
+    const validUrl = hasProtocol ? url : 'https://' + url;
+    document.getElementById('contentFrame').src = validUrl;
+  } else {
+    alert('Please enter a valid link.');
+  }
 }
 </script>
 </body>
