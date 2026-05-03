@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unblocker</title>
+</head>
+<body>
+<input type="text" id="linkInput" placeholder="Enter your link here" style="width: 80%;" />
+<button onclick="openLink()">Open Link</button>
+
+<script>
+function openLink() {
+    const url = document.getElementById('linkInput').value;
+    if (url) {
+        window.location.href = url; // Opens link in the same tab
+    } else {
+        alert('Please enter a valid link.');
+    }
+}
+</script>
+</body>
+</html>
