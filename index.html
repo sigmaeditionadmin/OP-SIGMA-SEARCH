@@ -7,7 +7,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    /* Starry background with a gradient overlay for a night sky effect */
+    /* Starry background with a space gradient overlay */
     background: 
       radial-gradient(white 1px, transparent 1px),
       radial-gradient(white 1px, transparent 1px);
@@ -23,7 +23,7 @@
     align-items: center;
   }
 
-  /* Overlay to make stars more visible and add a subtle space gradient */
+  /* Overlay for starry effect */
   body::before {
     content: "";
     position: absolute;
@@ -33,7 +33,7 @@
     z-index: -1;
   }
 
-  /* Header styling */
+  /* Header style */
   h1 {
     font-size: 48px;
     text-align: center;
@@ -44,9 +44,18 @@
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   }
 
-  /* Search input styling */
+  /* Search box and button container */
+  .search-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  /* Input styling */
   #linkInput {
-    width: 50%;
+    flex: 1;
     padding: 10px 15px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -63,11 +72,10 @@
   /* Button styling */
   button {
     padding: 10px 20px;
-    margin-left: 10px;
     font-size: 16px;
     border: none;
     border-radius: 24px;
-    background-color: #fff; /* White button for contrast */
+    background-color: #fff; /* White for contrast */
     color: #6a11cb; /* Purple text */
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -75,7 +83,7 @@
   }
 
   button:hover {
-    background-color: #e0e0e0; /* Light gray on hover */
+    background-color: #e0e0e0;
     color: #000;
   }
 
@@ -101,9 +109,10 @@
 
 <h1>SIGMA SEARCH</h1>
 
-<div style="text-align: center; width: 100%;">
+<!-- Search input and button -->
+<div class="search-container">
   <input type="text" id="linkInput" placeholder="Enter your link here" />
-  <button onclick="loadLink()">Open in Frame</button>
+  <button onclick="loadLink()">Search</button>
 </div>
 
 <div id="iframeContainer">
