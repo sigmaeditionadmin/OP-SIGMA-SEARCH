@@ -44,7 +44,7 @@
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   }
 
-  /* Search box and button container */
+  /* Search box and buttons container */
   .search-container {
     display: flex;
     justify-content: center;
@@ -109,7 +109,7 @@
 
 <h1>SIGMA SEARCH</h1>
 
-<!-- Search input and buttons -->
+<!-- Input and buttons -->
 <div class="search-container">
   <input type="text" id="linkInput" placeholder="Enter your link here" />
   <button onclick="loadLink()">Search</button>
@@ -135,7 +135,8 @@ function loadLink() {
 
 function openYouTube() {
   const url = 'https://www.youtube.com';
-  const proxyUrl = 'https://208.87.240.67/?__cpo=' + encodeURIComponent(url);
+  const encodedUrl = encodeURIComponent(url);
+  const proxyUrl = 'https://208.87.240.67/?__cpo=' + encodedUrl;
   document.getElementById('contentFrame').src = proxyUrl;
 }
 </script>
