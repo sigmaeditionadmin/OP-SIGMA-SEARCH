@@ -109,10 +109,11 @@
 
 <h1>SIGMA SEARCH</h1>
 
-<!-- Search input and button -->
+<!-- Search input and buttons -->
 <div class="search-container">
   <input type="text" id="linkInput" placeholder="Enter your link here" />
   <button onclick="loadLink()">Search</button>
+  <button onclick="openYouTube()">Open YouTube</button>
 </div>
 
 <div id="iframeContainer">
@@ -130,6 +131,13 @@ function loadLink() {
   } else {
     alert('Please enter a link.');
   }
+}
+
+function openYouTube() {
+  // Base64 for https://www.youtube.com
+  const youtubeBase64 = 'aHR0cHM6Ly93d3cueW91dHViZS5jb20=';
+  const proxyUrl = 'https://208.87.240.67/?__cpo=' + youtubeBase64;
+  document.getElementById('contentFrame').src = proxyUrl;
 }
 </script>
 
