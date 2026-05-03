@@ -7,14 +7,30 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    /* Gradient background: purple to blue */
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    /* Starry background with a gradient overlay for a night sky effect */
+    background: 
+      radial-gradient(white 1px, transparent 1px),
+      radial-gradient(white 1px, transparent 1px);
+    background-position: 
+      0 0, 25px 25px;
+    background-size: 50px 50px;
+    background-color: #0d1b2a; /* Dark night color */
     margin: 0;
     padding: 20px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  /* Overlay to make stars more visible and add a subtle space gradient */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(13, 27, 42, 0.3), rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+    z-index: -1;
   }
 
   /* Header styling */
@@ -25,7 +41,7 @@
     font-family: 'Arial', sans-serif;
     color: #fff;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   }
 
   /* Search input styling */
@@ -98,7 +114,6 @@
 function loadLink() {
   let url = document.getElementById('linkInput').value.trim();
   if (url) {
-    // Automatically prepend https:// if no protocol is present
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
       url = 'https://' + url;
     }
