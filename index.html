@@ -14,10 +14,7 @@
 function openInSameWindow() {
   const url = document.getElementById('linkInput').value.trim();
   if (url) {
-    // Make sure URL starts with http:// or https://
-    const hasProtocol = url.startsWith('http://') || url.startsWith('https://');
-    const targetUrl = hasProtocol ? url : 'https://' + url;
-    window.location.href = targetUrl; // Opens in the same window
+    window.location.href = url; // Opens the URL directly in the current tab
   } else {
     alert('Please enter a URL.');
   }
