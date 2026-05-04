@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Starry Background with YouTube Embed</title>
+<title>Starry Background with Iframe</title>
 <style>
   body {
     margin: 0;
@@ -39,33 +39,42 @@
     to { opacity: 1; }
   }
 
-  /* Styling for the iframe container */
-  .video-container {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 15px;
+  /* Style for the iframe container (search bar look) */
+  .iframe-container {
+    margin-top: 100px;
+    width: 80%;
+    max-width: 800px;
+    height: 400px;
+    border: 2px solid #fff;
     border-radius: 10px;
-    margin-top: 50px;
+    overflow: hidden;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
+  }
+
+  /* Make iframe fill the container */
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 
   h1 {
     color: white;
     margin-bottom: 20px;
   }
-
 </style>
 </head>
 <body>
 
+<h1>Starry Sky with Iframe</h1>
+
 <!-- Stars background -->
 <div class="stars" id="stars"></div>
 
-<h1>Starry Sky with YouTube Video</h1>
-
-<!-- Container for the video iframe -->
-<div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-    frameborder="0" allowfullscreen></iframe>
+<!-- Iframe acting as a search bar or content area -->
+<div class="iframe-container">
+  <!-- Example: embed a search page or YouTube, change src as needed -->
+  <iframe src="https://www.youtube.com" title="YouTube"></iframe>
 </div>
 
 <script>
