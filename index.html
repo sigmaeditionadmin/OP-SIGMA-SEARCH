@@ -3,23 +3,85 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Access YouTube</title>
+<title>Starry Background with YouTube Embed</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 20px;
+  }
+
+  /* Stars background effect */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+  }
+
+  /* Styling for the iframe container */
+  .video-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 50px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+  }
+
+  h1 {
+    color: white;
+    margin-bottom: 20px;
+  }
+
+</style>
 </head>
 <body>
 
-<h1>Access YouTube</h1>
+<!-- Stars background -->
+<div class="stars" id="stars"></div>
 
-<!-- Button to open YouTube directly -->
-<button onclick="window.open('https://www.youtube.com/watch?v=VIDEO_ID', '_blank')">
-  Open YouTube in new tab
-</button>
+<h1>Starry Sky with YouTube Video</h1>
 
-<!-- Attempt to embed YouTube in iframe -->
-<h2>Embed YouTube Video</h2>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+<!-- Container for the video iframe -->
+<div class="video-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    frameborder="0" allowfullscreen></iframe>
+</div>
 
 <script>
-// Replace VIDEO_ID with the actual YouTube video ID you want to embed
+  // Generate random stars
+  const starCount = 200; // number of stars
+  const starsContainer = document.getElementById('stars');
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.width = (Math.random() * 2 + 0.5) + 'px';
+    star.style.height = star.style.width;
+    starsContainer.appendChild(star);
+  }
 </script>
 
 </body>
