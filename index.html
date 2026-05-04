@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SIGMA SEARCH</title>
+<title>Access YouTube</title>
 </head>
 <body>
 
-<h1>SIGMA SEARCH</h1>
+<h1>Access YouTube</h1>
 
-<button onclick="loadYouTube()">Open YouTube (Base64)</button>
+<!-- Button to open YouTube directly -->
+<button onclick="window.open('https://www.youtube.com/watch?v=VIDEO_ID', '_blank')">
+  Open YouTube in new tab
+</button>
 
-<iframe id="contentFrame" style="width:100%; height:80vh; border:none;"></iframe>
+<!-- Attempt to embed YouTube in iframe -->
+<h2>Embed YouTube Video</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
 
 <script>
-function loadYouTube() {
-  const base64Url = "aHR0cHM6Ly93d3cueW91dHViZS5jb20="; // your Base64 string
-  const proxyUrl = 'https://208.87.240.67/?__cpo=' + encodeURIComponent(base64Url);
-  document.getElementById('contentFrame').src = proxyUrl;
-}
+// Replace VIDEO_ID with the actual YouTube video ID you want to embed
 </script>
 
 </body>
