@@ -2,20 +2,84 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<title>Main Page</title>
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    z-index: 999;
+  }
+  /* Stars background for main page (not critical here) */
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+
+<button onclick="openSigma()">Open Sigma in new tab</button>
+<div id="stars"></div>
+
+<script>
+  // Generate stars on main page background
+  const starCount = 200;
+  const starsContainer = document.getElementById('stars');
+  for (let i=0; i<starCount; i++) {
+    const star = document.createElement('div');
+    star.style.position='absolute';
+    star.style.top=(Math.random()*100)+'%';
+    star.style.left=(Math.random()*100)+'%';
+    star.style.width=(Math.random()*2+0.5)+'px';
+    star.style.height=star.style.width;
+    star.style.background='white';
+    star.style.borderRadius='50%';
+    star.style.opacity='0.8';
+    star.style.animation='twinkle 2s infinite alternate';
+    starsContainer.appendChild(star);
+  }
+
+  function openSigma() {
+    const newWin = window.open('about:blank', '_blank');
+    if (!newWin) {
+      alert('Popup blocked! Allow popups for this site.');
+      return;
+    }
+    // Write the complete sigma page into new window
+    newWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sigma Search Main Page</title>
+<title>Sigma Search</title>
 <style>
   body {
     margin: 0;
     height: 100vh;
     background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
-    overflow: hidden;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
   }
-  /* Stars background for main page (not inside iframe) */
-  .stars {
+  h1 {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+  }
+  #stars {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -32,37 +96,106 @@
     from { opacity: 0.4; }
     to { opacity: 1; }
   }
+  #searchArea {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+  #searchBox {
+    display: flex;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    overflow: hidden;
+  }
+  #searchBox input {
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    border-radius: 10px 0 0 10px;
+    width: 300px;
+  }
+  #searchBox button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+  }
+  #iframeContainer {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: calc(100% - 100px);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+  }
+  #contentFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 </style>
 </head>
 <body>
-
-<h1 style="position:fixed; top:5px; width:100%; text-align:center; color:white;">Sigma Search</h1>
-<!-- Stars background -->
-<div class="stars" id="stars"></div>
-
-<!-- Button to open in new tab -->
-<div style="position:fixed; top:10px; right:10px;">
-  <button onclick="openSigma()">Open Sigma in new tab</button>
+<h1 style="text-align:center; color:white; margin-top:10px;">Sigma Search</h1>
+<div id="stars"></div>
+<div id="searchArea">
+  <div id="searchBox">
+    <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
+    <button onclick="loadIframe()">Go</button>
+  </div>
+</div>
+<div id="iframeContainer" style="display:none;">
+  <iframe id="contentFrame" src=""></iframe>
 </div>
 
 <script>
-  // Generate stars for main page background
-  const starCount = 200;
-  const starsContainer = document.getElementById('stars');
-  for (let i=0; i<starCount; i++) {
+  // Generate stars in main page background
+  const starContainer = document.getElementById('stars');
+  for (let i=0; i<200; i++) {
     const star = document.createElement('div');
     star.className='star';
-    star.style.top = Math.random()*100 + '%';
-    star.style.left = Math.random()*100 + '%';
+    star.style.top = Math.random()*100+'%';
+    star.style.left = Math.random()*100+'%';
     star.style.width = (Math.random()*2+0.5)+'px';
     star.style.height = star.style.width;
-    starsContainer.appendChild(star);
+    star.style.background='white';
+    star.style.borderRadius='50%';
+    star.style.opacity='0.8';
+    star.style.animation='twinkle 2s infinite alternate';
+    starContainer.appendChild(star);
+  }
+
+  function loadIframe() {
+    const urlInput = document.getElementById('urlInput');
+    const url = urlInput.value.trim();
+    if (!url) {
+      alert('Please enter a URL');
+      return;
+    }
+    const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+    const iframe = document.getElementById('contentFrame');
+    iframe.src = fullUrl;
+    document.getElementById('iframeContainer').style.display = 'flex';
   }
 
   function openSigma() {
     const newWin = window.open('about:blank', '_blank');
     if (!newWin) {
-      alert('Popup blocked! Please allow popups for this site.');
+      alert('Popup blocked! Please allow popups.');
       return;
     }
     newWin.document.write(`<!DOCTYPE html>
@@ -80,8 +213,10 @@
     display: flex;
     flex-direction: column;
   }
-  h1 { text-align: center; color: white; margin-top: 10px; }
-  .stars {
+  h1 {
+    text-align: center; color: white; margin-top: 10px;
+  }
+  #stars {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -98,40 +233,228 @@
     from { opacity: 0.4; }
     to { opacity: 1; }
   }
+  #searchArea {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+  #searchBox {
+    display: flex;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    overflow: hidden;
+  }
+  #searchBox input {
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    border-radius: 10px 0 0 10px;
+    width: 300px;
+  }
+  #searchBox button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+  }
+  #iframeContainer {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: calc(100% - 100px);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  #contentFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 </style>
 </head>
 <body>
-<h1>Sigma Search</h1>
-<div class="stars" id="stars"></div>
-<!-- Search input -->
-<div style="position:fixed; top:50px; left:50%; transform:translateX(-50%); z-index:1;">
-  <div style="display:flex; background: rgba(0,0,0,0.6); border-radius:10px; box-shadow:0 0 20px rgba(255,255,255,0.5); overflow:hidden; padding:10px;">
-    <input type="text" id="urlInput" placeholder="Enter URL" style="padding:10px; font-size:1em; border:none; outline:none; border-radius:10px 0 0 10px; width:300px;">
-    <button onclick="loadIframe()" style="padding:10px 20px; font-size:1em; border:none; outline:none; background:#fff; cursor:pointer; border-radius:0 10px 10px 0;">Go</button>
+<h1 style="text-align:center; color:white; margin-top:10px;">Sigma Search</h1>
+<div id="stars"></div>
+<div id="searchArea">
+  <div id="searchBox">
+    <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
+    <button onclick="loadIframe()">Go</button>
   </div>
 </div>
-<!-- Iframe container -->
-<div style="position:fixed; top:100px; left:50%; transform:translateX(-50%); width:90%; height:calc(100% - 100px); border:2px solid #fff; border-radius:10px; overflow:hidden;">
+<div id="iframeContainer" style="display:none;">
   <iframe id="contentFrame" src=""></iframe>
 </div>
 <script>
-  // Generate stars inside the new window
+  // Generate stars in the new window
   const starsContainer = document.getElementById('stars');
   for (let i=0; i<200; i++) {
     const star = document.createElement('div');
     star.className='star';
-    star.style.top = Math.random()*100 + '%';
-    star.style.left = Math.random()*100 + '%';
+    star.style.top = Math.random()*100+'%';
+    star.style.left = Math.random()*100+'%';
     star.style.width = (Math.random()*2+0.5)+'px';
     star.style.height = star.style.width;
+    star.style.background='white';
+    star.style.borderRadius='50%';
+    star.style.opacity='0.8';
+    star.style.animation='twinkle 2s infinite alternate';
     starsContainer.appendChild(star);
   }
-
+</script>
+<script>
+  // Main page functions
   function loadIframe() {
     const url = document.getElementById('urlInput').value.trim();
-    if (!url) { alert('Enter a URL'); return; }
+    if (!url) { alert('Please enter a URL'); return; }
     const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
     document.getElementById('contentFrame').src = fullUrl;
+    document.getElementById('iframeContainer').style.display = 'flex';
+  }
+
+  function openSigma() {
+    const newWin = window.open('about:blank', '_blank');
+    if (!newWin) {
+      alert('Popup blocked! Please allow popups.');
+      return;
+    }
+    // Write full HTML content into the new window
+    newWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sigma Search</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  h1 {
+    text-align: center; color: white; margin-top: 10px;
+  }
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+  }
+  #searchArea {
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+  #searchBox {
+    display: flex;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    overflow: hidden;
+  }
+  #searchBox input {
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    border-radius: 10px 0 0 10px;
+    width: 300px;
+  }
+  #searchBox button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+  }
+  #iframeContainer {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: calc(100% - 100px);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  #contentFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+</head>
+<body>
+<h1 style="text-align:center; color:white; margin-top:10px;">Sigma Search</h1>
+<div id="stars"></div>
+<div id="searchArea">
+  <div id="searchBox">
+    <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
+    <button onclick="loadIframe()">Go</button>
+  </div>
+</div>
+<div id="iframeContainer" style="display:none;">
+  <iframe id="contentFrame" src=""></iframe>
+</div>
+<script>
+  // Generate stars for the new window
+  const starsContainer = document.getElementById('stars');
+  for (let i=0; i<200; i++) {
+    const star = document.createElement('div');
+    star.className='star';
+    star.style.top = Math.random()*100+'%';
+    star.style.left = Math.random()*100+'%';
+    star.style.width = (Math.random()*2+0.5)+'px';
+    star.style.height = star.style.width;
+    star.style.background='white';
+    star.style.borderRadius='50%';
+    star.style.opacity='0.8';
+    star.style.animation='twinkle 2s infinite alternate';
+    starsContainer.appendChild(star);
+  }
+</script>
+<script>
+  // Main page functions
+  function loadIframe() {
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url) { alert('Please enter a URL'); return; }
+    const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+    document.getElementById('contentFrame').src = fullUrl;
+    document.getElementById('iframeContainer').style.display='flex';
   }
 </script>
 </body>
