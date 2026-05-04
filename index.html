@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Starry Background with Search and Viewer</title>
+<title>Starry Background with Centered Search and Viewer</title>
 <style>
   body {
     margin: 0;
@@ -34,10 +34,10 @@
     to { opacity: 1; }
   }
 
-  /* Search bar at the top */
+  /* Centered search bar container */
   .search-container {
     position: fixed;
-    top: 10px;
+    top: 20%; /* Slightly below the top */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -74,19 +74,18 @@
     background-color: #ddd;
   }
 
-  /* Iframe container */
+  /* Iframe container filling rest of space */
   .iframe-container {
-    position: absolute;
-    top: 70px; /* below the search bar */
+    position: fixed;
+    top: 70%; /* start below the search bar */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    height: calc(100% - 80px); /* fill remaining space */
+    height: 28%; /* remaining space */
     border: 2px solid #fff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
-    margin-top: 10px;
   }
 
   iframe {
@@ -101,7 +100,7 @@
 <!-- Stars background -->
 <div class="stars" id="stars"></div>
 
-<!-- Search bar at the top -->
+<!-- Search bar centered more vertically -->
 <div class="search-container">
   <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
   <button onclick="loadIframe()">Go</button>
