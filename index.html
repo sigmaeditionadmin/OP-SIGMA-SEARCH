@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Starry Background with Search and Iframe</title>
+<title>Starry Background with Search and Viewer</title>
 <style>
   body {
     margin: 0;
@@ -34,10 +34,10 @@
     to { opacity: 1; }
   }
 
-  /* Centered search box styling */
+  /* Search bar at the top */
   .search-container {
-    position: absolute;
-    top: 20%;
+    position: fixed;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -47,6 +47,8 @@
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
     z-index: 1;
+    width: 90%;
+    max-width: 800px;
   }
 
   input[type="text"] {
@@ -55,7 +57,7 @@
     border: none;
     border-radius: 5px;
     outline: none;
-    width: 300px;
+    width: 70%;
   }
 
   button {
@@ -72,19 +74,19 @@
     background-color: #ddd;
   }
 
-  /* Iframe styling */
+  /* Iframe container */
   .iframe-container {
     position: absolute;
-    top: 50%;
+    top: 70px; /* below the search bar */
     left: 50%;
-    transform: translate(-50%, -10%);
+    transform: translateX(-50%);
     width: 90%;
-    height: 50%;
+    height: calc(100% - 80px); /* fill remaining space */
     border: 2px solid #fff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
-    background-color: #000;
+    margin-top: 10px;
   }
 
   iframe {
@@ -92,27 +94,14 @@
     height: 100%;
     border: none;
   }
-
-  /* Optional: Title at the top */
-  h1 {
-    position: absolute;
-    top: 10px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    margin: 0;
-    font-size: 1.5em;
-  }
 </style>
 </head>
 <body>
 
-<h1>Starry Sky with Search and Viewer</h1>
-
 <!-- Stars background -->
 <div class="stars" id="stars"></div>
 
-<!-- Search box -->
+<!-- Search bar at the top -->
 <div class="search-container">
   <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
   <button onclick="loadIframe()">Go</button>
@@ -124,7 +113,7 @@
 </div>
 
 <script>
-  // Generate random stars
+  // Generate stars
   const starCount = 200;
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < starCount; i++) {
@@ -144,7 +133,6 @@
       alert('Please enter a URL.');
       return;
     }
-    // Add https:// if missing
     let url = input;
     if (!/^https?:\/\//i.test(url)) {
       url = 'https://' + url;
