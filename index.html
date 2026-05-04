@@ -69,23 +69,21 @@
     width: 100%;
   }
 
-  /* Search tab styles */
-  .search-tab {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
+  /* Search input area */
+  .search-container {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
   }
-
   .search-box {
     display: flex;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
     overflow: hidden;
-    width: 90%;
-    max-width: 800px;
   }
-
   input[type="text"] {
     padding: 10px 15px;
     font-size: 1em;
@@ -94,7 +92,6 @@
     border-radius: 10px 0 0 10px;
     width: 300px;
   }
-
   button {
     padding: 10px 20px;
     font-size: 1em;
@@ -117,8 +114,8 @@
     border: 2px solid #fff;
     border-radius: 10px;
     overflow: hidden;
+    z-index: 0;
   }
-
   iframe {
     width: 100%;
     height: 100%;
@@ -133,20 +130,20 @@
 <!-- Stars background -->
 <div class="stars" id="stars"></div>
 
-<!-- Buttons to open in about:blank -->
+<!-- Button to open in about:blank -->
 <div style="position:fixed; top:10px; right:10px; z-index:3;">
   <button class="button" onclick="openSigmaInBlank()">Open Sigma Search in about:blank</button>
 </div>
 
 <!-- Search input & iframe container -->
-<div class="search-container" style="position:fixed; top:50px; left:50%; transform:translateX(-50%); z-index:1;">
+<div class="search-container">
   <div class="search-box">
     <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
     <button onclick="loadIframe()">Go</button>
   </div>
 </div>
 
-<div class="iframe-container" id="iframeContainer" style="display:none;">
+<div class="iframe-container" id="iframeContainer">
   <iframe id="contentFrame" src=""></iframe>
 </div>
 
@@ -179,7 +176,7 @@
     document.getElementById('iframeContainer').style.display = 'block';
   }
 
-  // Function to open Sigma Search in about:blank
+  // Function to open Sigma Search in about:blank with full content
   function openSigmaInBlank() {
     const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
@@ -198,13 +195,119 @@
             display: flex;
             flex-direction: column;
           }
-          h1 { text-align: center; color: white; margin-top: 20px; font-family: sans-serif; }
-          /* Repeat or include your styles if needed */
+          h1 { text-align: center; color: white; margin-top: 10px; font-family: sans-serif; }
+          /* Styles similar to main page */
+          .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+          }
+          .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 2s infinite alternate;
+          }
+          @keyframes twinkle {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+          }
+          /* Search box styles */
+          .search-container {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+          }
+          .search-box {
+            display: flex;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            overflow: hidden;
+            padding: 10px;
+          }
+          input[type="text"] {
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            outline: none;
+            border-radius: 10px 0 0 10px;
+            width: 300px;
+          }
+          button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            outline: none;
+            background-color: #fff;
+            cursor: pointer;
+            border-radius: 0 10px 10px 0;
+          }
+          /* Iframe container for Sigma Search */
+          .iframe-container {
+            display: flex;
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: calc(100% - 100px);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 0;
+          }
+          iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+          }
         </style>
       </head>
       <body>
         <h1>Sigma Search</h1>
-        <!-- You can add more content here if desired -->
+        <div class="stars" id="stars"></div>
+        <div class="search-container">
+          <div class="search-box">
+            <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
+            <button onclick="loadIframe()">Go</button>
+          </div>
+        </div>
+        <div class="iframe-container" id="iframeContainer">
+          <iframe id="contentFrame" src=""></iframe>
+        </div>
+        <script>
+          // Generate stars
+          const starCount = 200;
+          const starsContainer = document.getElementById('stars');
+          for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 2 + 0.5) + 'px';
+            star.style.height = star.style.width;
+            starsContainer.appendChild(star);
+          }
+
+          function loadIframe() {
+            const input = document.getElementById('urlInput').value.trim();
+            if (!input) {
+              alert('Please enter a URL.');
+              return;
+            }
+            let url = input;
+            if (!/^https?:\/\//i.test(url)) {
+              url = 'https://' + url;
+            }
+            document.getElementById('contentFrame').src = url;
+            document.getElementById('iframeContainer').style.display = 'flex';
+          }
+        </script>
       </body>
       </html>
     `);
