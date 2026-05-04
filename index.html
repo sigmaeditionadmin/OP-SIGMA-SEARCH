@@ -4,46 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SIGMA SEARCH</title>
-<!-- Keep your styles here as before -->
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    /* ... your existing styles ... */
-  }
-  /* ... rest of your styles ... */
-</style>
 </head>
 <body>
 
 <h1>SIGMA SEARCH</h1>
 
-<div class="search-container">
-  <input type="text" id="linkInput" placeholder="Enter your link here" />
-  <button onclick="loadLink()">Search</button>
-  <button onclick="openYouTube()">Open YouTube</button>
-</div>
+<button onclick="openYouTube()">Open YouTube</button>
 
-<div id="iframeContainer">
-  <iframe id="contentFrame" src=""></iframe>
-</div>
+<iframe id="contentFrame" style="width:100%; height:80vh; border:none;"></iframe>
 
 <script>
-function loadLink() {
-  let url = document.getElementById('linkInput').value.trim();
-  if (url) {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://' + url;
-    }
-    document.getElementById('contentFrame').src = url;
-  } else {
-    alert('Please enter a link.');
-  }
-}
-
 function openYouTube() {
-  const url = 'https://www.youtube.com'; // plain URL
-  // Try passing plain URL directly
-  const proxyUrl = 'https://208.87.240.67/?__cpo=' + url;
+  // Try passing the URL directly without encoding
+  const url = 'https://www.youtube.com';
+  const proxyUrl = 'https://208.87.240.67/?__cpo=' + url; // no encoding
   document.getElementById('contentFrame').src = proxyUrl;
 }
 </script>
