@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Starry Background with Top-Centered Search</title>
+<title>Sigma Search</title>
 <style>
   body {
     margin: 0;
@@ -36,7 +36,7 @@
     to { opacity: 1; }
   }
 
-  /* Search bar at the top of the page, fixed */
+  /* Fixed search bar at the top, centered horizontally */
   .search-container {
     position: fixed;
     top: 10px;
@@ -69,7 +69,7 @@
     border-radius: 0 10px 10px 0;
   }
 
-  /* Iframe fills remaining space below the fixed search bar */
+  /* Iframe fills remaining space below the search bar */
   .iframe-container {
     position: fixed;
     top: 50px; /* just below the search bar */
@@ -91,6 +91,9 @@
 </style>
 </head>
 <body>
+
+<!-- Website name -->
+<h1 style="position:fixed; top:5px; width:100%; text-align:center; color:white; margin:0; font-family:sans-serif;">Sigma Search</h1>
 
 <!-- Stars background -->
 <div class="stars" id="stars"></div>
