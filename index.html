@@ -15,7 +15,7 @@
     flex-direction: column;
   }
 
-  /* Stars background effect */
+  /* Stars background effect for main page (not inside iframe) */
   .stars {
     position: fixed;
     top: 0; left: 0;
@@ -41,56 +41,61 @@
 
 <h1 style="position:fixed; top:5px; width:100%; text-align:center; color:white; margin:0; font-family:sans-serif;">Sigma Search</h1>
 
+<!-- Stars background -->
+<div class="stars" id="stars"></div>
+
 <!-- Button to open in about:blank -->
 <div style="position:fixed; top:10px; right:10px; z-index:3;">
   <button class="button" onclick="openSigmaInBlank()">Open Sigma Search in about:blank</button>
 </div>
 
-<!-- Search input & iframe container -->
+<!-- Search input & button -->
 <div class="search-container" style="position:fixed; top:50px; left:50%; transform:translateX(-50%); z-index:1;">
-  <div class="search-box" style="display:flex; background: rgba(0,0,0,0.6); border-radius:10px; box-shadow:0 0 20px rgba(255,255,255,0.5); overflow:hidden; padding:10px;">
+  <div style="display:flex; background: rgba(0,0,0,0.6); border-radius:10px; box-shadow:0 0 20px rgba(255,255,255,0.5); overflow:hidden; padding:10px;">
     <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" style="padding:10px; font-size:1em; border:none; outline:none; border-radius:10px 0 0 10px; width:300px;">
     <button onclick="loadIframe()" style="padding:10px 20px; font-size:1em; border:none; outline:none; background:#fff; cursor:pointer; border-radius:0 10px 10px 0;">Go</button>
   </div>
 </div>
 
+<!-- Iframe container for embedded Sigma Search -->
 <div class="iframe-container" id="iframeContainer" style="display:none; position:fixed; top:100px; left:50%; transform:translateX(-50%); width:90%; height:calc(100% - 100px); border:2px solid #fff; border-radius:10px; overflow:hidden; z-index:0;">
   <iframe id="contentFrame" src=""></iframe>
 </div>
 
 <script>
-  // Generate stars
+  // Generate stars background
   const starCount = 200;
   const starsContainer = document.getElementById('stars');
-  for (let i = 0; i < starCount; i++) {
+  for (let i=0; i<starCount; i++) {
     const star = document.createElement('div');
-    star.className = 'star';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.width = (Math.random() * 2 + 0.5) + 'px';
-    star.style.height = star.style.width;
+    star.className='star';
+    star.style.top=Math.random()*100+'%';
+    star.style.left=Math.random()*100+'%';
+    star.style.width=(Math.random()*2+0.5)+'px';
+    star.style.height=star.style.width;
     starsContainer.appendChild(star);
   }
 
+  // Load URL into iframe
   function loadIframe() {
-    const input = document.getElementById('urlInput').value.trim();
-    if (!input) {
+    const urlInput = document.getElementById('urlInput');
+    const url = urlInput.value.trim();
+    if (!url) {
       alert('Please enter a URL.');
       return;
     }
-    let url = input;
-    if (!/^https?:\/\//i.test(url)) {
-      url = 'https://' + url;
-    }
-    document.getElementById('contentFrame').src = url;
+    const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+    const iframe = document.getElementById('contentFrame');
+    iframe.src = fullUrl;
     document.getElementById('iframeContainer').style.display = 'block';
   }
 
-  // Open full Sigma Search in a new about:blank
+  // Function to open a new tab with Sigma Search embedded
   function openSigmaInBlank() {
-    const newWindow = window.open('about:blank', '_blank');
+    const newWindow = window.open('', '_blank'); // open blank
     newWindow.document.open();
-    newWindow.document.write(`<!DOCTYPE html>
+    newWindow.document.write(`
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -101,13 +106,11 @@
     margin: 0;
     height: 100vh;
     background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
-    overflow: hidden;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
   }
   h1 { text-align: center; color: white; margin-top: 10px; font-family: sans-serif; }
-  /* Stars background styles */
   .stars {
     position: fixed;
     top: 0; left: 0;
@@ -142,6 +145,7 @@
   <iframe id="contentFrame" src=""></iframe>
 </div>
 <script>
+  // Generate stars
   const starsContainer = document.getElementById('stars');
   for (let i=0; i<200; i++) {
     const star = document.createElement('div');
@@ -153,14 +157,16 @@
     starsContainer.appendChild(star);
   }
   function loadIframe() {
-    const url=document.getElementById('urlInput').value.trim();
-    if(!url){ alert('Enter a URL'); return; }
-    if(!/^https?:\/\//i.test(url)){ url='https://'+url; }
-    document.getElementById('contentFrame').src=url;
+    const urlInput = document.getElementById('urlInput');
+    const url = urlInput.value.trim();
+    if (!url) { alert('Enter a URL'); return; }
+    const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
+    document.getElementById('contentFrame').src = fullUrl;
   }
 </script>
 </body>
-</html>`);
+</html>
+    `);
     newWindow.document.close();
   }
 </script>
