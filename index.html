@@ -11,8 +11,6 @@
     background: radial-gradient(ellipse at bottom, #000013 0%, #000000 100%);
     overflow: hidden;
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
   }
   /* Stars background */
   #stars {
@@ -32,21 +30,33 @@
     from { opacity: 0.4; }
     to { opacity: 1; }
   }
-  /* Search bar styling */
-  #searchContainer {
-    position: fixed;
-    top: 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+
+  /* Title at the top */
+  h1 {
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
     z-index: 1;
   }
+
+  /* Search and button container */
+  #topControls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Search box styling */
   #searchBox {
     display: flex;
     background: rgba(0,0,0,0.6);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
-    overflow: hidden;
   }
   #searchBox input {
     padding: 10px;
@@ -63,18 +73,35 @@
     background: #fff;
     cursor: pointer;
   }
+
+  /* Button to open veck.io */
+  #openVeckBtn {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    background: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #openVeckBtn:hover {
+    background: #45a049;
+  }
+
   /* iframe container */
   #iframeContainer {
     position: fixed;
-    top: 60px;
+    top: 100px; /* below the top controls */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    height: calc(100% - 60px);
+    height: calc(100% - 150px);
     border: 2px solid #fff;
     border-radius: 10px;
     overflow: hidden;
-    display: none;
+    display: none; /* hidden by default */
+    z-index: 0;
   }
   #contentIframe {
     width: 100%;
@@ -84,20 +111,25 @@
 </style>
 </head>
 <body>
-<h1 style="text-align:center; color:white;">Sigma Search</h1>
+<h1>Sigma Search</h1>
+
 <!-- Stars background -->
 <div id="stars"></div>
-<!-- Search bar -->
-<div id="searchContainer">
+
+<!-- Controls: Search bar and button -->
+<div id="topControls">
   <div id="searchBox">
     <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
     <button onclick="loadIframe()">Go</button>
   </div>
+  <button id="openVeckBtn" onclick="openVeck()">Open veck.io</button>
 </div>
-<!-- iframe display -->
+
+<!-- iframe container -->
 <div id="iframeContainer">
   <iframe id="contentIframe" src=""></iframe>
 </div>
+
 <script>
   // Generate stars
   const starContainer = document.getElementById('stars');
@@ -110,6 +142,7 @@
     star.style.height=star.style.width;
     starContainer.appendChild(star);
   }
+
   function loadIframe() {
     const url = document.getElementById('urlInput').value.trim();
     if (!url) {
@@ -117,7 +150,14 @@
       return;
     }
     const fullUrl = /^https?:\/\//i.test(url) ? url : 'https://' + url;
-    document.getElementById('contentIframe').src = fullUrl;
+    const iframe = document.getElementById('contentIframe');
+    iframe.src = fullUrl;
+    document.getElementById('iframeContainer').style.display = 'block';
+  }
+
+  function openVeck() {
+    const iframe = document.getElementById('contentIframe');
+    iframe.src = 'https://veck.io';
     document.getElementById('iframeContainer').style.display = 'block';
   }
 </script>
