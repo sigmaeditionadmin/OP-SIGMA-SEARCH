@@ -121,10 +121,10 @@
     transition: all 0.3s ease;
   }
 
-  /* full screen styles */
-  #iframeContainer.fullscreen {
-    top: 0;
-    left: 0;
+  /* Styles for fullscreen mode via API */
+  #iframeContainer.fullscreen-api {
+    position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     border-radius: 0;
@@ -154,8 +154,8 @@
   <button class="siteButton" onclick="openVeck()">veck.io</button>
   <button class="siteButton" onclick="loadSite('https://pizzaedition.win')">pizzaedition.win</button>
   <button class="siteButton" onclick="loadSite('https://ozgames.io')">ozgames.io</button>
-  <!-- Full screen button -->
-  <button id="fullScreenBtn" onclick="toggleFullScreen()">Full Screen</button>
+  <!-- Full screen toggle button -->
+  <button id="fullScreenBtn" onclick="toggleFullScreen()">FULL SCREEN</button>
 </div>
 
 <!-- iframe container -->
@@ -186,8 +186,7 @@
     const iframe = document.getElementById('contentIframe');
     iframe.src = fullUrl;
     document.getElementById('iframeContainer').style.display = 'block';
-    // Remove fullscreen if active
-    document.getElementById('iframeContainer').classList.remove('fullscreen');
+    document.getElementById('iframeContainer').classList.remove('fullscreen-api');
   }
 
   function openVeck() {
@@ -198,13 +197,19 @@
     const iframe = document.getElementById('contentIframe');
     iframe.src = url;
     document.getElementById('iframeContainer').style.display = 'block';
-    // Remove fullscreen if active
-    document.getElementById('iframeContainer').classList.remove('fullscreen');
+    document.getElementById('iframeContainer').classList.remove('fullscreen-api');
   }
 
   function toggleFullScreen() {
     const container = document.getElementById('iframeContainer');
-    container.classList.toggle('fullscreen');
+    if (!document.fullscreenElement) {
+      container.classList.add('fullscreen-api');
+      container.requestFullscreen().catch((err) => {
+        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
   }
 </script>
 </body>
