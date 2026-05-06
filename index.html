@@ -45,11 +45,11 @@
   #topControls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Vertically align items */
     gap: 10px;
     margin-top: 10px;
-    position: relative;
-    z-index: 1;
+    padding: 10px 0; /* Extra space around */
   }
 
   /* Search box styling */
@@ -58,6 +58,8 @@
     background: rgba(0,0,0,0.6);
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    align-items: center;
+    padding: 5px;
   }
   #searchBox input {
     padding: 10px;
@@ -73,9 +75,11 @@
     outline: none;
     background: #fff;
     cursor: pointer;
+    margin-left: 5px;
+    border-radius: 5px;
   }
 
-  /* Additional site buttons style */
+  /* Buttons style */
   .siteButton {
     padding: 10px 15px;
     font-size: 1em;
@@ -154,6 +158,7 @@
   <button class="siteButton" onclick="openVeck()">veck.io</button>
   <button class="siteButton" onclick="loadSite('https://pizzaedition.win')">pizzaedition.win</button>
   <button class="siteButton" onclick="loadSite('https://ozgames.io')">ozgames.io</button>
+  <button class="siteButton" onclick="loadSite('https://crazygames.com')">crazygames.com</button> <!-- New button -->
   <!-- Full screen toggle button -->
   <button id="fullScreenBtn" onclick="toggleFullScreen()">FULL SCREEN</button>
 </div>
@@ -210,11 +215,10 @@
     }
   }
 
-  // Listen for fullscreen change to remove class when exiting fullscreen
+  // Exit fullscreen and revert style
   document.addEventListener('fullscreenchange', () => {
     const container = document.getElementById('iframeContainer');
     if (!document.fullscreenElement) {
-      // Exit fullscreen, reset style
       container.classList.remove('fullscreen-api');
     }
   });
