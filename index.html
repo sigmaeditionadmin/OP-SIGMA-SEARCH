@@ -207,10 +207,17 @@
       container.requestFullscreen().catch((err) => {
         alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
       });
-    } else {
-      document.exitFullscreen();
     }
   }
+
+  // Listen for fullscreen change to remove class when exiting fullscreen
+  document.addEventListener('fullscreenchange', () => {
+    const container = document.getElementById('iframeContainer');
+    if (!document.fullscreenElement) {
+      // Exit fullscreen, reset style
+      container.classList.remove('fullscreen-api');
+    }
+  });
 </script>
 </body>
 </html>
