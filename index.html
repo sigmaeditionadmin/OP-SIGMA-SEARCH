@@ -90,10 +90,25 @@
     background: #0b7dda;
   }
 
+  /* Full screen button style */
+  #fullScreenBtn {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #f39c12;
+    color: white;
+  }
+  #fullScreenBtn:hover {
+    background: #d35400;
+  }
+
   /* iframe container */
   #iframeContainer {
     position: fixed;
-    top: 150px; /* below the controls */
+    top: 150px; /* below controls */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -103,7 +118,18 @@
     overflow: hidden;
     display: none; /* hidden by default */
     z-index: 0;
+    transition: all 0.3s ease;
   }
+
+  /* full screen styles */
+  #iframeContainer.fullscreen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
   #contentIframe {
     width: 100%;
     height: 100%;
@@ -117,17 +143,19 @@
 <!-- Stars background -->
 <div id="stars"></div>
 
-<!-- Controls: Search bar and site buttons -->
+<!-- Controls: Search, site buttons, full screen -->
 <div id="topControls">
   <!-- Search bar -->
   <div id="searchBox">
     <input type="text" id="urlInput" placeholder="Enter URL (with or without https://)" />
     <button onclick="loadIframe()">Go</button>
   </div>
-  <!-- Buttons to load specific sites -->
+  <!-- Site buttons -->
   <button class="siteButton" onclick="openVeck()">veck.io</button>
   <button class="siteButton" onclick="loadSite('https://pizzaedition.win')">pizzaedition.win</button>
-  <button class="siteButton" onclick="loadSite('https://oxgames.io')">oxgames.io</button>
+  <button class="siteButton" onclick="loadSite('https://ozgames.io')">ozgames.io</button>
+  <!-- Full screen button -->
+  <button id="fullScreenBtn" onclick="toggleFullScreen()">Full Screen</button>
 </div>
 
 <!-- iframe container -->
@@ -158,6 +186,8 @@
     const iframe = document.getElementById('contentIframe');
     iframe.src = fullUrl;
     document.getElementById('iframeContainer').style.display = 'block';
+    // Remove fullscreen if active
+    document.getElementById('iframeContainer').classList.remove('fullscreen');
   }
 
   function openVeck() {
@@ -168,6 +198,13 @@
     const iframe = document.getElementById('contentIframe');
     iframe.src = url;
     document.getElementById('iframeContainer').style.display = 'block';
+    // Remove fullscreen if active
+    document.getElementById('iframeContainer').classList.remove('fullscreen');
+  }
+
+  function toggleFullScreen() {
+    const container = document.getElementById('iframeContainer');
+    container.classList.toggle('fullscreen');
   }
 </script>
 </body>
